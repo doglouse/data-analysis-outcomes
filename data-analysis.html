@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Analysis — PRIME Admin 3</title>
+
+<!-- Fonts actually used: Roboto (chrome/labels), Roboto Flex (values/badges), Inter (modal titles) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Inter:wght@400;500;600&display=swap">
+<!-- Icons: Material Design Icons webfont (the only icon set used) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+
+<style>
+/* PRIME Admin 3 design tokens & type */
+/* ============================================================
+   PrimeAdmin 3 — Colors & Type
+   Material-style admin design system.
+   v2 (Aug 2026): squared buttons, trimmed palette, caps heading
+   ladder, softened elevation. Reconciled against the Activity
+   Details redesign, the Admin 3 Pattern Library, and the
+   Newsletters build.
+   ============================================================ */
+
+
+
+
+
+:root {
+  /* ---------- Interactive blue -------------------------------
+     One accent per action class. Blue is anything that changes
+     data; aqua is reserved for links that leave the page. */
+  --pa-primary:        rgb(25, 118, 210);
+  --pa-primary-700:    rgb(17,  71, 161);  /* active tab, pressed, link hover */
+  --pa-primary-050:    rgb(238, 245, 252); /* inline sub-panels, row hover */
+  --pa-primary-12a:    rgba(25, 118, 210, 0.12); /* selected chip / tag fill */
+  --pa-primary-04a:    rgba(25, 118, 210, 0.04); /* hover film */
+
+  /* ---------- Aqua — external-link buttons only -------------- */
+  --pa-aqua-500:       rgb(  0, 173, 238);
+
+  /* ---------- Ink -------------------------------------------- */
+  --pa-ink:            rgb( 33,  33,  33); /* headings, body */
+  --pa-ink-2:          rgb( 66,  66,  66); /* icon default, rule copy */
+  --pa-ink-3:          rgb(102, 102, 102); /* field labels, helper text */
+  --pa-ink-4:          rgb(113, 113, 113); /* meta values, secondary rows */
+  --pa-ink-6:          rgb(137, 147, 158); /* placeholder, empty value */
+  --pa-ink-7:          rgb(158, 158, 158); /* disabled border, empty glyph */
+
+  /* ---------- Surfaces --------------------------------------- */
+  --pa-paper:          rgb(255, 255, 255);
+  --pa-band:           rgb(240, 240, 240); /* section band — the only
+                                              non-white content surface */
+  --pa-line:           rgb(238, 238, 238); /* hairline */
+  --pa-line-2:         rgb(224, 224, 224); /* unselected chip */
+  --pa-divider:        rgba(0, 0, 0, 0.12); /* card + modal borders */
+  --pa-rule:           rgba(0, 0, 0, 0.60); /* list-table head rule */
+  --pa-sidebar-bg:     rgb( 32,  32,  32);
+  --pa-sidebar-active: rgb( 62,  62,  62);
+  --pa-avatar-green:   rgb( 76, 175,  80); /* signed-in user, header only */
+
+  /* ---------- Field chrome -----------------------------------
+     Record fields focus to black, not blue: the underline is
+     structure, not an action. */
+  --pa-field-line:     rgba(0, 0, 0, 0.42);
+  --pa-field-focus:    rgb(0, 0, 0);
+
+  /* ---------- Semantic — status text, toasts, validation ------ */
+  --pa-success:        rgb( 46, 125,  50);
+  --pa-success-bg:     rgb(232, 245, 233);
+  --pa-warning:        rgb(233, 143,  40);
+  --pa-warning-bg:     rgb(255, 244, 229);
+  --pa-error:          rgb(211,  47,  47);
+  --pa-error-bg:       rgb(253, 237, 237);
+
+  /* ---------- Type stack ------------------------------------- */
+  --pa-font-sans:       "Roboto", system-ui, sans-serif;
+  --pa-font-display:    "Roboto Flex", "Roboto", system-ui, sans-serif;
+  --pa-font-modal:      "Inter", "Roboto", system-ui, sans-serif;
+
+  /* ---------- Radii ------------------------------------------
+     Buttons are squared. The 16px pill is reserved for chips,
+     role badges, and status pills. */
+  --pa-radius-xs:    2px;   /* table cells */
+  --pa-radius-sm:    4px;   /* cards, buttons, fields, search */
+  --pa-radius-lg:    8px;   /* modals, panels, dropzone */
+  --pa-radius-pill: 16px;   /* chips, badges */
+
+  /* ---------- Elevation -------------------------------------- */
+  --pa-elev-1: 0 1px 2px 0 rgba(0,0,0,0.05), 0 1px 1px -1px rgba(0,0,0,0.05);
+  --pa-elev-2: 0 1px 5px 0 rgba(0,0,0,0.12),
+               0 2px 2px 0 rgba(0,0,0,0.14),
+               0 3px 1px -2px rgba(0,0,0,0.20);                  /* buttons */
+  --pa-elev-card: 0 10px 13px -5px rgba(0,0,0,0.05),
+                  0 4px 5px -6px rgba(0,0,0,0.05);               /* form cards */
+  --pa-elev-raised: 0 20px 25px -5px rgba(0,0,0,0.10),
+                    0 8px 10px -6px rgba(0,0,0,0.10);            /* faculty card, toast */
+  --pa-elev-modal: 0 9px 46px 8px rgba(0,0,0,0.12),
+                   0 24px 38px 3px rgba(0,0,0,0.14),
+                   0 11px 15px -7px rgba(0,0,0,0.20);            /* modals, drawers */
+
+  /* ---------- Spacing ---------------------------------------- */
+  --pa-s-1:  4px;
+  --pa-s-2:  8px;
+  --pa-s-3: 12px;
+  --pa-s-4: 16px;
+  --pa-s-5: 20px;
+  --pa-s-6: 24px;   /* between stacked fields, between cards */
+  --pa-s-8: 32px;   /* page gutter, card padding */
+  --pa-s-10: 40px;  /* between paired columns */
+  --pa-s-15: 60px;
+}
+
+/* ============================================================
+   Heading ladder — all caps, Roboto Regular, one role per level
+   ============================================================ */
+
+/* Page title. One per page. */
+.pa-page-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 34px;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--pa-primary);
+  margin: 0;
+}
+
+/* Screen heading — names the record, carries its code in parens. */
+.pa-screen-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Card section band title — sits on --pa-band. */
+.pa-band-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Rail heading — groups right-hand utility stacks. */
+.pa-rail-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 26px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Modal / drawer title — Inter, the only place it appears. */
+.pa-modal-title {
+  font-family: var(--pa-font-modal);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* ============================================================
+   Body, meta, and control type
+   ============================================================ */
+
+.pa-body-16 { font-family: var(--pa-font-display); font-size: 16px; line-height: 24px; letter-spacing: 0.1px; color: var(--pa-ink); }
+.pa-body-14 { font-family: var(--pa-font-sans); font-size: 14px; line-height: 20px; color: var(--pa-ink); }
+.pa-body-13 { font-family: var(--pa-font-sans); font-size: 13.5px; line-height: 20px; color: var(--pa-ink); }
+.pa-body-12 { font-family: var(--pa-font-sans); font-size: 12px; line-height: 18px; color: var(--pa-ink); }
+
+/* Helper text. Belongs to the field it explains, never the group. */
+.pa-helper { font-family: var(--pa-font-sans); font-size: 12px; line-height: 18px; color: var(--pa-ink-3); }
+
+/* Meta strip under a page title: key in caps, value in medium. */
+.pa-meta { display: flex; flex-wrap: wrap; gap: 6px 30px; font-family: var(--pa-font-sans); font-size: 13px; }
+.pa-meta-key { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pa-ink-3); }
+.pa-meta-val { font-weight: 500; color: var(--pa-ink); }
+.pa-meta-val--success { color: var(--pa-success); font-weight: 500; }
+.pa-meta-val--warning { color: var(--pa-warning); font-weight: 500; }
+.pa-meta-val--error   { color: var(--pa-error);   font-weight: 500; }
+
+/* Field label at rest, and once floated above the underline. */
+.pa-field-label { font-family: var(--pa-font-sans); font-size: 13px; line-height: 19px; color: var(--pa-ink-3); }
+.pa-field-label--float { font-size: 11.5px; line-height: 16px; color: var(--pa-ink-3); }
+
+/* Value inside a field. */
+.pa-input-text { font-family: var(--pa-font-display); font-size: 13.5px; line-height: 20px; color: var(--pa-ink); }
+
+.pa-button-text { font-family: var(--pa-font-sans); font-weight: 500; font-size: 12px; line-height: 100%; text-transform: uppercase; }
+.pa-button-text-sm { font-family: var(--pa-font-display); font-weight: 700; font-size: 10.8px; line-height: 16.2px; text-transform: uppercase; }
+.pa-chip-text { font-family: var(--pa-font-display); font-weight: 700; font-size: 10.5px; line-height: 16px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.pa-caption { font-family: var(--pa-font-sans); font-size: 11.5px; line-height: 16px; color: var(--pa-ink-3); }
+
+/* Section eyebrow inside rule callouts and sub-panels. */
+.pa-eyebrow {
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pa-primary);
+}
+
+/* PRIME Admin 3 components */
+/* PrimeAdmin 3 — component styles for preview cards, templates, and
+   the UI kit. Tokens come from ../colors_and_type.css.
+   v2 (Aug 2026): squared buttons, 4px cards, section bands, grid +
+   list tables, app chrome, empty states. */
+@import url("../colors_and_type.css");
+
+/* ================= Buttons =====================================
+   Squared to 4px. Label always all caps. One primary per region. */
+.pa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: var(--pa-radius-sm);
+  border: none;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+  transition: background 150ms cubic-bezier(.4,0,.2,1), box-shadow 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-btn::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: transparent; pointer-events: none; z-index: 1; }
+.pa-btn > * { position: relative; z-index: 2; }
+.pa-btn--sm { height: 24px; padding: 0 12px; font-size: 10.8px; }
+.pa-btn--lg { height: 40px; padding: 0 20px; }
+.pa-btn--block { width: 100%; }
+/* Escape hatch: row-level add/remove buttons inside picker drawers. */
+.pa-btn--pill { border-radius: var(--pa-radius-pill); }
+
+.pa-btn--primary { background: var(--pa-primary); color: #fff; box-shadow: var(--pa-elev-2); }
+.pa-btn--primary:hover::after  { background: rgba(255,255,255,0.08); }
+.pa-btn--primary:active::after { background: rgba(0,0,0,0.24); }
+
+.pa-btn--secondary { background: #fff; color: var(--pa-primary); border: 1px solid var(--pa-primary); }
+.pa-btn--secondary:hover::after  { background: var(--pa-primary-04a); }
+.pa-btn--secondary:active::after { background: rgba(25,118,210,0.24); }
+
+.pa-btn--secondary-grey { background: #fff; color: var(--pa-ink-2); border: 1px solid var(--pa-ink-7); }
+.pa-btn--secondary-grey:hover::after  { background: rgba(33,33,33,0.04); }
+.pa-btn--secondary-grey:active::after { background: rgba(33,33,33,0.24); }
+
+.pa-btn--tertiary { background: transparent; color: var(--pa-primary); }
+.pa-btn--tertiary:hover::after  { background: var(--pa-primary-04a); }
+.pa-btn--tertiary:active::after { background: rgba(25,118,210,0.24); }
+
+.pa-btn--tertiary-grey { background: transparent; color: var(--pa-ink-2); }
+.pa-btn--tertiary-grey:hover::after  { background: rgba(33,33,33,0.04); }
+.pa-btn--tertiary-grey:active::after { background: rgba(33,33,33,0.24); }
+
+/* Destructive: outline for in-page removals, solid only in a confirm dialog. */
+.pa-btn--danger-outline { background: #fff; color: var(--pa-error); border: 1px solid var(--pa-error); }
+.pa-btn--danger-outline:hover::after { background: rgba(211,47,47,0.06); }
+.pa-btn--danger { background: var(--pa-error); color: #fff; box-shadow: var(--pa-elev-2); }
+.pa-btn--danger:hover::after { background: rgba(255,255,255,0.08); }
+
+.pa-btn[disabled] { opacity: 0.3; pointer-events: none; box-shadow: none; }
+a.pa-btn, a.pa-btn:hover { text-decoration: none; }
+a.pa-btn--primary, a.pa-btn--primary:hover, a.pa-btn--danger, a.pa-btn--danger:hover { color: #fff; }
+a.pa-btn--secondary-grey, a.pa-btn--secondary-grey:hover { color: var(--pa-ink-2); }
+
+/* Rail link button — aqua, full width, left aligned, open-in-new.
+   Only for destinations outside the current page. */
+.pa-btn-rail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--pa-aqua-500);
+  color: #fff;
+  border: none;
+  border-radius: var(--pa-radius-sm);
+  padding: 11px 14px;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--pa-elev-2);
+}
+.pa-btn-rail:hover { filter: brightness(1.06); }
+.pa-btn-rail i { font-size: 16px; }
+
+/* Icon button — 36px circular target, 6% ink film on hover. Always titled. */
+.pa-icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pa-ink-2);
+  transition: background 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-icon-btn i { font-size: 19px; }
+.pa-icon-btn:hover { background: rgba(33,33,33,0.06); }
+.pa-icon-btn--sm { width: 32px; height: 32px; }
+.pa-icon-btn--primary { color: var(--pa-primary); }
+.pa-icon-btn--primary:hover { background: var(--pa-primary-04a); }
+.pa-icon-btn--danger { color: var(--pa-error); }
+.pa-icon-btn--danger:hover { background: rgba(211,47,47,0.08); }
+
+/* ================= Chips, badges, pills ======================== */
+.pa-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--pa-radius-pill);
+  font-family: var(--pa-font-display);
+  font-weight: 700;
+  font-size: 10.8px;
+  line-height: 16.2px;
+  text-transform: uppercase;
+  background: var(--pa-line-2);
+  color: var(--pa-ink);
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+}
+.pa-chip::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.pa-chip > * { position: relative; z-index: 2; }
+.pa-chip--selected { background: var(--pa-primary-12a); color: var(--pa-primary); }
+.pa-chip:hover.pa-chip--selected::after { background: var(--pa-primary-04a); }
+.pa-chip:hover:not(.pa-chip--selected)::after { background: rgba(33,33,33,0.04); }
+.pa-chip[disabled] { opacity: 0.3; pointer-events: none; }
+
+/* Role badge — solid blue pill, not interactive. */
+.pa-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: var(--pa-radius-pill);
+  background: var(--pa-primary);
+  color: #fff;
+  font-family: var(--pa-font-display);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+/* Count / tag pill — 12% tint. */
+.pa-badge--tint { background: var(--pa-primary-12a); color: var(--pa-primary); padding: 4px 11px; font-size: 10px; }
+.pa-badge--success { background: var(--pa-success); }
+
+/* Document status pill — outline, icon leads. */
+.doc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--pa-radius-pill);
+  border: 1px solid var(--pa-line-2);
+  font-family: var(--pa-font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--pa-ink-3);
+  background: #fff;
+}
+.doc-pill--ok   { border-color: rgba(46,125,50,0.5);  color: var(--pa-success); background: var(--pa-success-bg); }
+.doc-pill--warn { border-color: rgba(233,143,40,0.5); color: var(--pa-warning); background: var(--pa-warning-bg); }
+.doc-pill--err  { border-color: rgba(211,47,47,0.5);  color: var(--pa-error);   background: var(--pa-error-bg); }
+
+/* Status dot + label — status is coloured text, never a filled badge. */
+.pa-status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--pa-font-sans); font-size: 12.5px; }
+.pa-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+.pa-status--on  { color: var(--pa-success); }
+.pa-status--off { color: var(--pa-ink-4); }
+
+/* Avatars — initials on primary-050. Green is the signed-in user only. */
+.pa-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--pa-primary-050);
+  color: var(--pa-primary);
+  font-family: var(--pa-font-display);
+  font-weight: 600;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.pa-avatar--overflow { background: var(--pa-line-2); color: var(--pa-ink-3); font-family: var(--pa-font-sans); font-size: 11px; }
+.pa-avatar--lg { width: 78px; height: 78px; font-size: 24px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--pa-avatar-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--pa-font-sans); font-weight: 500; font-size: 12px; flex: 0 0 auto; }
+
+/* ================= Fields ======================================
+   Floating label: on the baseline when empty, rising 24px and
+   scaling to 11.5px once focused or filled. Focus is black —
+   the underline is structure, not an action. `.vf` in
+   _vuetify-inputs.css is the interactive Vuetify-accurate build;
+   `.pa-field` is the static documentation form of the same thing. */
+.pa-field { position: relative; padding-top: 18px; width: 100%; font-family: var(--pa-font-sans); }
+.pa-field__label {
+  position: absolute;
+  left: 0; top: 18px;
+  padding: 6px 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--pa-ink-3);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 150ms cubic-bezier(.4,0,.2,1), color 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-field:where(:focus-within) > .pa-field__label,
+.pa-field:where(:has(.pa-field__input:not(:placeholder-shown))) > .pa-field__label,
+.pa-field:where(:has(> div:not(.pa-field__hint))) > .pa-field__label,
+.pa-field--filled > .pa-field__label { transform: translateY(-24px) scale(0.885); }
+.pa-field:focus-within > .pa-field__label { color: var(--pa-field-focus); }
+.pa-field__input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid var(--pa-field-line);
+  padding: 6px 0;
+  font-family: var(--pa-font-display);
+  font-size: 13.5px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  background: transparent;
+  outline: none;
+  transition: border-color 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-field__input::placeholder { color: transparent; }
+.pa-field__input:focus { border-bottom: 2px solid var(--pa-field-focus); padding-bottom: 5px; caret-color: var(--pa-field-focus); }
+/* Boxed search and filter inputs may show a real placeholder. */
+.pa-field--hasplaceholder .pa-field__input::placeholder { color: var(--pa-ink-6); }
+.pa-field--error .pa-field__input { border-bottom-color: var(--pa-error); }
+.pa-field--error > .pa-field__label, .pa-field--error:focus-within > .pa-field__label { color: var(--pa-error); }
+.pa-field--error .pa-field__hint { color: var(--pa-error); }
+/* Read-only keeps the underline but switches it to dashed. */
+.pa-field--disabled .pa-field__input { border-bottom-style: dashed; color: var(--pa-ink-7); }
+.pa-field__hint { font-size: 12px; line-height: 18px; color: var(--pa-ink-3); padding-top: 6px; }
+/* Trailing affordance row (select chevron, date, time, chips). */
+.pa-field__control { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--pa-field-line); padding: 6px 0; }
+.pa-field__control i { font-size: 19px; color: var(--pa-ink-2); }
+.pa-field__value { flex: 1; font-family: var(--pa-font-display); font-size: 13.5px; color: var(--pa-ink); }
+.pa-field__value--empty { color: var(--pa-ink-6); }
+
+/* Boxed search — search and table filters only. */
+.search { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; background: #fff; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); width: 280px; box-sizing: border-box; }
+.search input { border: none; outline: none; background: transparent; font-family: var(--pa-font-display); font-size: 13px; flex: 1; min-width: 0; color: var(--pa-ink); }
+.search input::placeholder { color: var(--pa-ink-6); }
+
+/* ================= Surfaces ==================================== */
+.pa-card { background: #fff; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); box-shadow: var(--pa-elev-1); }
+.pa-card--form { box-shadow: var(--pa-elev-card); }
+.pa-card--raised { box-shadow: var(--pa-elev-raised); }
+
+/* Section band — divides one card into labelled groups.
+   Related groups become bands inside a card, never new cards. */
+.pa-band {
+  background: var(--pa-band);
+  padding: 13px 32px;
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pa-band--sm { padding: 12px 16px; font-size: 16px; }
+.pa-card__body { padding: 26px 32px 28px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Inline sub-panel — primary-050, opens directly under its trigger. */
+.pa-subpanel { background: var(--pa-primary-050); border-top: 1px solid var(--pa-line); padding: 16px; }
+
+/* Rule callout — the documentation voice, also used for inline guidance. */
+.pa-rules { background: var(--pa-primary-050); border-radius: var(--pa-radius-sm); padding: 16px 18px; }
+.pa-rules ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--pa-font-sans); font-size: 12.5px; line-height: 19px; color: var(--pa-ink-2); }
+
+/* Dropzone — the only dashed border in the product. */
+.pa-dropzone { border: 2px dashed var(--pa-primary); border-radius: var(--pa-radius-lg); padding: 34px 20px; text-align: center; background: #fff; font-family: var(--pa-font-sans); font-size: 13.5px; }
+.pa-dropzone__hint { font-size: 12.5px; color: var(--pa-ink-3); margin-top: 5px; }
+.pa-file-row { display: flex; align-items: center; gap: 12px; border: 1px solid var(--pa-primary); border-radius: var(--pa-radius-sm); padding: 10px 14px; font-family: var(--pa-font-sans); }
+
+/* Empty / not-migrated state. */
+.pa-empty { border: 1px solid var(--pa-line); border-radius: var(--pa-radius-sm); display: flex; flex-direction: column; align-items: center; padding: 40px 24px; text-align: center; font-family: var(--pa-font-sans); }
+.pa-empty i { font-size: 48px; color: var(--pa-ink-7); }
+.pa-empty__title { font-size: 18px; margin-top: 14px; color: var(--pa-ink); }
+.pa-empty__body { font-size: 13.5px; line-height: 20px; color: var(--pa-ink-3); margin-top: 6px; max-width: 360px; }
+
+/* ================= Tables ======================================
+   Grid table for a bounded set inside a record — never paginated.
+   List table for open-ended index screens. */
+.pa-table { border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); overflow: hidden; font-family: var(--pa-font-sans); }
+.pa-table__head, .pa-table__row { display: grid; align-items: center; }
+.pa-table__head { background: var(--pa-band); font-size: 12px; font-weight: 500; color: var(--pa-ink); }
+.pa-table__head > * { padding: 11px 16px; border-right: 1px solid var(--pa-divider); }
+.pa-table__head > *:last-child { border-right: none; }
+.pa-table__row { border-top: 1px solid var(--pa-line); font-size: 13px; }
+.pa-table__row > * { padding: 12px 16px; border-right: 1px solid var(--pa-line); }
+.pa-table__row > *:last-child { border-right: none; }
+.pa-table__row:hover { background: var(--pa-primary-04a); }
+
+.pa-ltable { width: 100%; border-collapse: collapse; font-family: var(--pa-font-sans); }
+.pa-ltable th { padding: 14px; text-align: left; font-size: 14px; font-weight: 400; color: var(--pa-ink); white-space: nowrap; border-top: 1px solid var(--pa-rule); border-bottom: 1px solid var(--pa-rule); }
+.pa-ltable th.sortable { cursor: pointer; user-select: none; }
+.pa-ltable td { padding: 14px; font-size: 13.5px; color: var(--pa-ink); border-bottom: 1px solid var(--pa-line); vertical-align: top; }
+.pa-ltable tbody tr:hover { background: rgba(33,33,33,0.02); }
+.pa-ltable .num { color: var(--pa-ink-2); }
+.pa-ltable .desc { font-size: 12.5px; line-height: 18px; color: var(--pa-ink-2); text-wrap: pretty; }
+.pa-ltable .acts { text-align: right; white-space: nowrap; }
+
+/* Table controls — repeat above and below a list table. */
+.pa-tablebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 6px 0 10px; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink-2); }
+.pa-tablebar--footer { padding: 12px 0 0; border-top: 1px solid var(--pa-rule); }
+.pa-tablebar select { height: 34px; border: 1px solid var(--pa-line); border-radius: var(--pa-radius-sm); background: #fff; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink); padding: 0 8px; }
+.pa-pager { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.pa-pager button { min-width: 30px; height: 30px; padding: 0 6px; border: none; border-radius: var(--pa-radius-sm); background: transparent; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink-2); cursor: pointer; }
+.pa-pager button:hover { background: rgba(33,33,33,0.06); }
+.pa-pager button[aria-current="page"] { background: var(--pa-primary-12a); color: var(--pa-primary); font-weight: 500; }
+.pa-pager button[disabled] { opacity: 0.3; pointer-events: none; }
+
+/* ================= Toast ======================================= */
+.pa-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--pa-radius-sm);
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  color: var(--pa-ink);
+  background: #fff;
+  border-left: 4px solid var(--pa-primary);
+  box-shadow: var(--pa-elev-raised);
+}
+.pa-toast--success { border-left-color: var(--pa-success); }
+.pa-toast--warning { border-left-color: var(--pa-warning); }
+.pa-toast--error   { border-left-color: var(--pa-error); }
+.pa-toast__icon { font-size: 20px; display: inline-flex; }
+.pa-toast--success .pa-toast__icon { color: var(--pa-success); }
+.pa-toast--warning .pa-toast__icon { color: var(--pa-warning); }
+.pa-toast--error   .pa-toast__icon { color: var(--pa-error); }
+.pa-toast--info    .pa-toast__icon { color: var(--pa-primary); }
+
+/* ================= App chrome ================================== */
+.topbar { height: 56px; background: #fff; border-bottom: 1px solid var(--pa-divider); display: flex; align-items: center; padding: 0 24px; gap: 16px; }
+.topbar__btn { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--pa-ink-2); cursor: pointer; border: none; background: transparent; }
+.topbar__btn:hover { background: rgba(0,0,0,0.04); }
+
+.sb { width: 230px; flex-shrink: 0; background: var(--pa-sidebar-bg); color: #fff; font-family: var(--pa-font-sans); display: flex; flex-direction: column; }
+.sb__head { padding: 18px 14px; display: flex; align-items: center; justify-content: space-between; }
+.sb__brand { font-weight: 500; font-size: 19px; letter-spacing: 1px; color: #fff; }
+.sb__brand span { color: var(--pa-aqua-500); }
+.sb__collapse { color: rgba(255,255,255,0.6); cursor: pointer; }
+.sb__section { padding: 4px 0; }
+.sb__item { display: flex; align-items: center; gap: 14px; padding: 12px 18px; font-size: 14px; color: rgba(255,255,255,0.9); cursor: pointer; user-select: none; }
+.sb__item i { font-size: 20px; }
+.sb__item__chev { margin-left: auto; font-size: 18px; opacity: 0.6; }
+.sb__item--active { background: var(--pa-sidebar-active); }
+.sb__item:hover:not(.sb__item--active) { background: rgba(255,255,255,0.06); }
+.sb__sub { padding: 2px 0 8px; }
+.sb__sub-item { display: flex; padding: 8px 18px 8px 54px; font-size: 13px; color: rgba(255,255,255,0.72); cursor: pointer; }
+.sb__sub-item--active { background: var(--pa-sidebar-active); color: #fff; }
+.sb__sub-item:hover:not(.sb__sub-item--active) { color: #fff; }
+
+/* Tab bar — full-width primary blue, equal-width tabs, no underline. */
+.pa-tabs { display: flex; align-items: stretch; height: 48px; background: var(--pa-primary); color: #fff; }
+.pa-tabs--sm { height: 44px; }
+.pa-tabs__btn {
+  flex: 1;
+  height: 100%;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.pa-tabs__btn--active { background: var(--pa-primary-700); }
+.pa-tabs__btn:hover:not(.pa-tabs__btn--active) { background: rgba(255,255,255,0.06); }
+
+/* Switcher — segmented pill inside a grey track. Two variants:
+   --blue (default) for choices that change data or selection;
+   --white for passive view toggles (how something is displayed). */
+.pa-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--pa-band);
+  border-radius: 999px;
+  width: fit-content;
+  justify-self: start;
+  align-self: start;
+  isolation: isolate;
+}
+.pa-switcher__btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  height: 30px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-family: var(--pa-font-display);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pa-ink-4);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 150ms cubic-bezier(.4,0,.2,1), color 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-switcher__btn:hover:not(.pa-switcher__btn--active) { background: rgba(33,33,33,0.05); color: var(--pa-ink-2); }
+.pa-switcher__btn:focus-visible { outline: 2px solid var(--pa-ink); outline-offset: 1px; }
+.pa-switcher__btn[disabled] { opacity: 0.35; pointer-events: none; }
+.pa-switcher--sm { padding: 2px; }
+.pa-switcher--sm .pa-switcher__btn { height: 26px; padding: 0 14px; font-size: 10.8px; }
+/* Blue: active state is a solid primary pill. */
+.pa-switcher--blue .pa-switcher__btn--active { background: var(--pa-primary); color: #fff; }
+.pa-switcher--blue .pa-switcher__btn--active:hover { background: var(--pa-primary-700); }
+/* White: active state is a raised white pill on the grey track. */
+.pa-switcher--white .pa-switcher__btn--active {
+  background: #fff;
+  color: var(--pa-ink);
+  box-shadow: var(--pa-elev-2);
+}
+
+/* Breadcrumb — sits below the tab bar, never above. */
+.pa-crumb { font-family: var(--pa-font-sans); font-size: 13px; line-height: 18px; color: var(--pa-ink-3); }
+.pa-crumb a { color: var(--pa-primary); }
+
+/* Modal scrim */
+.scrim { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 24px; }
+
+/* PRIME Admin 3 fields, switches */
+/* ============================================================
+   Shared Vuetify-style input base — underlined variant.
+   Used by fields-*.html cards (text field, textarea, combobox,
+   radio, checkbox). The active accent is #000 per brand spec.
+   ============================================================ */
+
+.vf {
+  position: relative;
+  padding-top: 18px;
+  font-family: var(--pa-font-sans);
+  color: var(--pa-ink);
+}
+
+.vf__input,
+.vf__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  background: transparent;
+  padding: 4px 0 6px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  outline: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  transition: border-color 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vf__textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+.vf__input::placeholder,
+.vf__textarea::placeholder { color: rgba(0, 0, 0, 0.38); }
+.vf__input:placeholder-shown:not(:focus)::placeholder,
+.vf__textarea:placeholder-shown:not(:focus)::placeholder { color: transparent; }
+
+.vf__label {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transform-origin: top left;
+  transition: transform 200ms cubic-bezier(.4, 0, .2, 1),
+              color 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vf__input:focus ~ .vf__label,
+.vf__input:not(:placeholder-shown) ~ .vf__label,
+.vf__textarea:focus ~ .vf__label,
+.vf__textarea:not(:placeholder-shown) ~ .vf__label {
+  transform: translateY(-18px) scale(0.857);
+}
+.vf__input:focus,
+.vf__textarea:focus,
+.vf--focused .vf__input,
+.vf--focused .vf__textarea {
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+  caret-color: #000;
+}
+.vf__input:focus ~ .vf__label,
+.vf__textarea:focus ~ .vf__label,
+.vf--focused .vf__label {
+  transform: translateY(-18px) scale(0.857);
+  color: #000;
+}
+
+.vf__messages {
+  min-height: 14px;
+  padding: 4px 0 0;
+  font-size: 12px;
+  line-height: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.vf__counter { float: right; font-size: 12px; color: rgba(0, 0, 0, 0.6); padding-top: 4px; }
+
+/* Error */
+.vf--error .vf__input,
+.vf--error .vf__textarea,
+.vf--error .vf__input:focus,
+.vf--error .vf__textarea:focus { border-bottom-color: var(--pa-error); }
+.vf--error .vf__label,
+.vf--error .vf__input:focus ~ .vf__label,
+.vf--error .vf__textarea:focus ~ .vf__label { color: var(--pa-error); }
+.vf--error .vf__messages { color: var(--pa-error); }
+
+/* Disabled */
+.vf--disabled .vf__input,
+.vf--disabled .vf__textarea {
+  color: rgba(0, 0, 0, 0.38);
+  border-bottom-style: dotted;
+  border-bottom-color: rgba(0, 0, 0, 0.38);
+  pointer-events: none;
+}
+.vf--disabled .vf__label { color: rgba(0, 0, 0, 0.38); }
+
+/* Trailing icon (eye, dropdown chevron, etc.)
+   Sits at the input baseline, clear of the underline. */
+.vf__input--with-icon,
+.vf__textarea--with-icon { padding-right: 28px; }
+.vf__icon {
+  position: absolute;
+  right: 0;
+  top: 22px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.vf__icon:hover { color: #000; }
+
+/* ============================================================
+   Selection controls — radio + checkbox
+   ============================================================ */
+
+.vsel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  cursor: pointer;
+  user-select: none;
+}
+.vsel input { position: absolute; opacity: 0; pointer-events: none; }
+.vsel__box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.6);
+  transition: color 150ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsel__box i { font-size: 20px; }
+.vsel:hover .vsel__box { color: #000; }
+.vsel input:checked + .vsel__box { color: #000; }
+.vsel input:disabled ~ .vsel__box,
+.vsel--disabled .vsel__box { color: rgba(0, 0, 0, 0.26) !important; }
+.vsel--disabled,
+.vsel input:disabled ~ .vsel__label { color: rgba(0, 0, 0, 0.38); pointer-events: none; }
+
+/* Radio / checkbox groups */
+.vgroup { display: flex; gap: 4px 24px; flex-wrap: wrap; }
+.vgroup--inline { flex-direction: row; align-items: center; }
+.vgroup--stacked { flex-direction: column; gap: 2px; }
+
+.vgroup__legend {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 4px;
+}
+
+/* ============================================================
+   Switch / Toggle — Vuetify v-switch default variant
+   Thin track with a larger thumb that protrudes above/below.
+   Off: grey track + white thumb.
+   On:  light-green tinted track + full success-green thumb.
+   ============================================================ */
+.vsw {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.vsw input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  inset: 0;
+}
+.vsw__track {
+  position: relative;
+  width: 36px;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.38);
+  border-radius: 7px;
+  flex-shrink: 0;
+  transition: background 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsw__thumb {
+  position: absolute;
+  top: -3px;          /* protrudes above the track */
+  left: -1px;         /* protrudes slightly past the track at rest */
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2),
+              0 1px 1px 0 rgba(0,0,0,0.14),
+              0 1px 3px 0 rgba(0,0,0,0.12);
+  transition: transform 200ms cubic-bezier(.4, 0, .2, 1),
+              background 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsw input:checked + .vsw__track { background: rgba(46, 125, 50, 0.5); }
+.vsw input:checked + .vsw__track .vsw__thumb {
+  transform: translateX(18px);
+  background: var(--pa-success);
+}
+.vsw:hover .vsw__track { background: rgba(0, 0, 0, 0.5); }
+.vsw:hover input:checked + .vsw__track { background: rgba(46, 125, 50, 0.6); }
+
+.vsw input:disabled + .vsw__track,
+.vsw--disabled .vsw__track { background: rgba(0, 0, 0, 0.18) !important; }
+.vsw input:disabled:checked + .vsw__track,
+.vsw--disabled input:checked + .vsw__track { background: rgba(46, 125, 50, 0.28) !important; }
+.vsw input:disabled:checked + .vsw__track .vsw__thumb,
+.vsw--disabled input:checked + .vsw__track .vsw__thumb { background: rgba(46, 125, 50, 0.6) !important; }
+.vsw input:disabled ~ .vsw__label,
+.vsw--disabled { color: rgba(0, 0, 0, 0.38); pointer-events: none; }
+
+
+/* ---------- page ---------- */
+body { margin: 0; background: #fff; font-family: var(--pa-font-sans); color: var(--pa-ink); }
+a { color: var(--pa-primary); text-decoration: none; }
+a:hover { color: var(--pa-primary-700); }
+.app { display: flex; min-height: 100vh; }
+.app__side { width: 230px; position: sticky; top: 0; align-self: flex-start; height: 100vh; }
+.app__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar { position: sticky; top: 0; z-index: 20; }
+.pagehead { display: flex; align-items: center; gap: 16px; padding: 18px 32px 14px; }
+.pagehead__actions { display: flex; align-items: center; gap: 12px; }
+main { padding: 28px 32px 40px; display: flex; flex-direction: column; }
+main.view--selection { gap: 36px; }
+main.view--sub { gap: 22px; }
+main.view--saved { gap: 16px; min-height: 60vh; }
+section.stack { display: flex; flex-direction: column; gap: 14px; }
+.intro { margin: 0; max-width: 1180px; line-height: 22px; text-wrap: pretty; }
+.intro strong { font-weight: 500; }
+.rowend { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 6px; }
+.foot { text-align: center; padding-top: 8px; font-size: 13px; font-weight: 500; }
+.scroller { overflow-x: auto; }
+
+/* selected-interaction cards on the grey strip */
+.picked { display: flex; gap: 10px; flex-wrap: wrap; background: var(--pa-band); padding: 8px; border-radius: var(--pa-radius-sm); }
+.picked__card { display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); padding: 10px 8px 10px 12px; }
+.view--selection .picked { margin-top: 4px; }
+.view--selection .picked__card { width: 520px; max-width: 100%; }
+.view--sub .picked__card { flex: 1; min-width: 320px; max-width: 520px; }
+.picked__body { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.picked__title { font-size: 14px; line-height: 20px; text-wrap: pretty; }
+.tagrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; align-items: center; height: 24px; padding: 0 12px; border-radius: var(--pa-radius-pill); font-family: var(--pa-font-display); font-weight: 600; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.tag--outline { border: 1px solid var(--pa-primary); color: var(--pa-primary); }
+.tag--solid { background: var(--pa-primary); color: #fff; }
+.tag--row { height: 26px; font-size: 10.5px; letter-spacing: .05em; border: 1px solid var(--pa-primary); color: var(--pa-primary); }
+
+/* year "select" */
+.yearfield { position: relative; width: 172px; }
+.yearfield__box { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); background: #fff; box-sizing: border-box; }
+.yearfield__val { flex: 1; font-family: var(--pa-font-display); font-size: 14px; }
+.yearfield__label { position: absolute; top: -8px; left: 9px; padding: 0 4px; background: #fff; font-size: 11.5px; line-height: 16px; color: var(--pa-ink-3); }
+.searchrow { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+
+/* interactions table */
+.itable { min-width: 860px; }
+.itable__head { border-top: 1px solid var(--pa-rule); border-bottom: 1px solid var(--pa-rule); }
+.itable__row { display: grid; grid-template-columns: 64px 130px minmax(150px, 320px) minmax(0, 1fr); align-items: center; padding: 0 8px; }
+.itable__head .itable__row { font-size: 14px; }
+.itable__body .itable__row { border-bottom: 1px solid var(--pa-line); }
+.itable__row > div { padding: 14px; }
+.itable__check { padding: 12px 14px !important; display: flex; align-items: center; justify-content: center; }
+.itable__check input { width: 18px; height: 18px; accent-color: var(--pa-primary); cursor: pointer; }
+.itable__code { font-size: 13.5px; color: var(--pa-ink-2); }
+.itable__surveys { padding: 12px 14px !important; display: flex; flex-wrap: wrap; gap: 8px; }
+.itable__title { font-size: 13.5px; line-height: 20px; text-wrap: pretty; overflow-wrap: anywhere; }
+
+/* subanalysis */
+.sub__cols { display: flex; gap: 24px; align-items: flex-start; }
+.rail { width: 300px; flex: none; display: flex; flex-direction: column; gap: 18px; }
+.rail__note { margin: 0; line-height: 22px; text-wrap: pretty; border-top: 1px solid var(--pa-line); padding-top: 16px; }
+.rail__dates { display: flex; gap: 16px; }
+.rail__dates .vf { flex: 1; min-width: 0; }
+.rail__dates .vf__input { font-family: var(--pa-font-display); font-size: 15px; }
+.subhead { margin: 0; background: none; padding: 0; font-size: 17px; }
+.filter { display: flex; flex-direction: column; }
+.filter__row { display: grid; grid-template-columns: 1fr 56px 62px 34px; align-items: center; gap: 6px; padding: 9px 0; border-bottom: 1px solid var(--pa-line); }
+.filter__row--head { padding: 8px 0; border-bottom: 1px solid var(--pa-rule); }
+.filter__name { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 19px; }
+.filter__row--head .filter__name { font-size: 15px; }
+.filter__num { font-size: 14px; font-family: var(--pa-font-display); text-align: right; }
+.filter__row--head .filter__num { font-size: 13px; color: var(--pa-ink-3); font-family: var(--pa-font-sans); }
+.results { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.results__hint { margin: 0; }
+.results__hint span { color: var(--pa-ink-3); }
+.results__scroll { overflow-x: auto; padding-bottom: 8px; }
+.results__track { display: flex; gap: 16px; min-width: min-content; }
+.rcol { width: 440px; flex: none; display: flex; flex-direction: column; gap: 14px; }
+.rcol__head { display: flex; align-items: baseline; gap: 10px; font-size: 15px; font-family: var(--pa-font-display); }
+.rblock { border: 1px solid var(--pa-rule); border-radius: var(--pa-radius-xs); }
+.rblock__q { padding: 12px 14px; background: var(--pa-band); font-size: 13.5px; line-height: 19px; text-wrap: pretty; border-bottom: 1px solid var(--pa-rule); }
+.rblock__total, .rblock__row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 14px; font-size: 13.5px; border-bottom: 1px solid var(--pa-line); }
+.rblock__total { background: #FAFAFA; }
+.rblock__total span:last-child { font-family: var(--pa-font-display); }
+.rblock__row span:first-child { line-height: 19px; text-wrap: pretty; }
+.rblock__row span:last-child { font-family: var(--pa-font-display); white-space: nowrap; color: var(--pa-ink-2); }
+
+/* saved subanalysis */
+.crumbs { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--pa-ink-3); }
+.crumbs span { color: var(--pa-ink-4); }
+.toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ftable { min-width: 900px; }
+.ftable__row { display: grid; grid-template-columns: minmax(240px, 1.4fr) minmax(180px, 1fr) 150px 150px 130px; align-items: center; padding: 0 8px; }
+.ftable__head { border-bottom: 1px solid var(--pa-rule); font-size: 14px; }
+.ftable__body .ftable__row { border-bottom: 1px solid var(--pa-line); cursor: pointer; background: #fff; }
+.ftable__body .ftable__row[data-selected="true"] { background: var(--pa-primary-050); }
+.ftable__row > div { padding: 14px; }
+.ftable__name { padding: 12px 14px !important; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.ftable__name span { line-height: 20px; overflow-wrap: anywhere; }
+.ftable__by { font-size: 13.5px; color: var(--pa-ink-2); overflow-wrap: anywhere; }
+.ftable__date { font-size: 13.5px; font-family: var(--pa-font-display); }
+.ftable__acts { padding: 10px 14px !important; display: flex; align-items: center; gap: 4px; color: var(--pa-ink-4); }
+.ftable__empty { padding: 28px; text-align: center; font-size: 14px; color: var(--pa-ink-3); border-bottom: 1px solid var(--pa-line); }
+
+/* modals */
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.dialog { width: 100%; max-width: 480px; background: #fff; border-radius: var(--pa-radius-lg); box-shadow: var(--pa-elev-modal); display: flex; flex-direction: column; }
+.dialog--wide { max-width: 520px; }
+.dialog__head { display: flex; align-items: flex-start; gap: 12px; padding: 24px 24px 0; }
+.dialog__head i { font-size: 22px; line-height: 26px; }
+.dialog__body { margin: 0; padding: 14px 24px 24px 58px; line-height: 22px; text-wrap: pretty; }
+.dialog__body--plain { padding: 12px 24px 24px; }
+.dialog__foot { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid var(--pa-line); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sb app__side">
+    <div class="sb__head" style="padding:20px 16px">
+      <div class="sb__brand">PRIME <span>ADMIN</span></div>
+      <i class="mdi mdi-chevron-left sb__collapse"></i>
+    </div>
+    <div class="sb__section"><div class="sb__item"><i class="mdi mdi-account-box-outline"></i><span>Program Management</span><i class="mdi mdi-chevron-down sb__item__chev"></i></div></div>
+    <div class="sb__section"><div class="sb__item"><i class="mdi mdi-chart-line"></i><span>Marketing</span><i class="mdi mdi-chevron-down sb__item__chev"></i></div></div>
+    <div class="sb__section">
+      <div class="sb__item sb__item--active"><i class="mdi mdi-view-dashboard-outline"></i><span>Outcomes</span><i class="mdi mdi-chevron-up sb__item__chev"></i></div>
+      <div class="sb__sub">
+        <div class="sb__sub-item sb__sub-item--active">Data Analysis</div>
+        <div class="sb__sub-item">Survey Creator</div>
+        <div class="sb__sub-item">Gift Card Center</div>
+      </div>
+    </div>
+    <div class="sb__section"><div class="sb__item"><i class="mdi mdi-chart-box-outline"></i><span>Reporting</span><i class="mdi mdi-chevron-down sb__item__chev"></i></div></div>
+    <div class="sb__section"><div class="sb__item"><i class="mdi mdi-tools"></i><span>Tools</span><i class="mdi mdi-chevron-down sb__item__chev"></i></div></div>
+    <div class="sb__section"><div class="sb__item"><i class="mdi mdi-account-cog-outline"></i><span>User Manager</span><i class="mdi mdi-chevron-down sb__item__chev"></i></div></div>
+  </nav>
+
+  <div class="app__main">
+    <header class="topbar">
+      <div class="search" style="flex:1;max-width:520px;height:40px">
+        <input placeholder="Search for [Project]">
+        <i class="mdi mdi-magnify" style="color:var(--pa-ink-6);font-size:19px"></i>
+      </div>
+      <button class="pa-btn pa-btn--primary pa-btn--lg"><i class="mdi mdi-plus" style="font-size:16px"></i><span>Create</span></button>
+      <div style="flex:1"></div>
+      <button class="topbar__btn" title="Notifications"><i class="mdi mdi-bell-outline" style="font-size:22px;color:var(--pa-ink-2)"></i></button>
+      <span class="avatar" style="background:#D32F2F;width:34px;height:34px;font-size:13px">DB</span>
+    </header>
+
+    <div class="pagehead">
+      <h1 class="pa-page-title" style="flex:1">Data Analysis</h1>
+      <div class="pagehead__actions" id="subActions" hidden>
+        <button class="pa-btn pa-btn--secondary pa-btn--lg"><span>Save Subanalysis</span></button>
+        <button class="pa-btn pa-btn--primary pa-btn--lg"><i class="mdi mdi-download-outline" style="font-size:17px"></i><span>Generate Download</span></button>
+      </div>
+    </div>
+
+    <div class="pa-tabs">
+      <button class="pa-tabs__btn">Overview</button>
+      <button class="pa-tabs__btn" data-tab="selection">Data Selection</button>
+      <button class="pa-tabs__btn" data-tab="sub">Subanalysis</button>
+      <button class="pa-tabs__btn" data-tab="saved">Saved Subanalysis</button>
+    </div>
+
+    <!-- ========== Data Selection ========== -->
+    <main class="view view--selection" id="viewSelection">
+      <section class="stack">
+        <h2 class="pa-screen-title">Interaction Selected</h2>
+        <p class="pa-body-14 intro">Begin by searching for the interactions you're interested in. Browse through the results and select the ones you want to analyze. You can select as many interactions as you need. Once you've made all your selections, simply click on the <strong>Analyze Dataset</strong> button to start your analysis.</p>
+        <div class="picked" id="selectionPicked" hidden></div>
+        <div class="rowend">
+          <span class="pa-caption" id="selectionLabel" style="font-size:13px"></span>
+          <button class="pa-btn pa-btn--primary pa-btn--lg" id="analyzeBtn" disabled><span>Analyze Dataset</span></button>
+        </div>
+      </section>
+
+      <section class="stack" style="gap:20px">
+        <h2 class="pa-screen-title">Search for Interactions</h2>
+
+        <div class="searchrow">
+          <div class="yearfield">
+            <div class="yearfield__box"><span class="yearfield__val">2026</span><i class="mdi mdi-menu-down" style="font-size:20px;color:var(--pa-ink-2)"></i></div>
+            <span class="yearfield__label">Start Year</span>
+          </div>
+          <div class="yearfield">
+            <div class="yearfield__box"><span class="yearfield__val">2026</span><i class="mdi mdi-menu-down" style="font-size:20px;color:var(--pa-ink-2)"></i></div>
+            <span class="yearfield__label">End Year</span>
+          </div>
+          <div class="search" style="flex:1;min-width:320px;height:44px;padding:0 14px">
+            <input placeholder="Select Projects, Activities and/or survey types" style="font-size:14px">
+            <i class="mdi mdi-magnify" style="color:var(--pa-ink-6);font-size:20px"></i>
+          </div>
+          <button class="pa-btn pa-btn--secondary pa-btn--lg" style="height:44px"><span>Search</span></button>
+        </div>
+
+        <div>
+          <div class="pa-tablebar" style="padding:2px 0 12px">
+            <span>1-20 of 463</span>
+            <span style="display:flex;align-items:center;gap:10px">Rows per page: <select><option>20</option><option>50</option><option>100</option></select></span>
+            <div class="pa-pager">
+              <button title="Previous page" disabled><i class="mdi mdi-chevron-left" style="font-size:20px;vertical-align:-4px"></i></button>
+              <button aria-current="page">1</button><button>2</button><button>3</button><button>4</button>
+              <span style="padding:0 4px;color:var(--pa-ink-4)">…</span><button>24</button>
+              <button title="Next page"><i class="mdi mdi-chevron-right" style="font-size:20px;vertical-align:-4px"></i></button>
+            </div>
+          </div>
+
+          <div class="scroller">
+            <div class="itable">
+              <div class="itable__head">
+                <div class="itable__row"><div></div><div>Code</div><div>Surveys</div><div>Title</div></div>
+              </div>
+              <div class="itable__body" id="interactionRows"></div>
+            </div>
+          </div>
+
+          <div class="pa-tablebar" style="padding:14px 0 0">
+            <span>1-20 of 463</span>
+            <span style="display:flex;align-items:center;gap:10px">Rows per page: <select><option>20</option><option>50</option><option>100</option></select></span>
+            <div class="pa-pager">
+              <button title="Previous page" disabled><i class="mdi mdi-chevron-left" style="font-size:20px;vertical-align:-4px"></i></button>
+              <button aria-current="page">1</button><button>2</button><button>3</button><button>4</button>
+              <span style="padding:0 4px;color:var(--pa-ink-4)">…</span><button>24</button>
+              <button title="Next page"><i class="mdi mdi-chevron-right" style="font-size:20px;vertical-align:-4px"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">1997-2026 PRIME Education, LLC</footer>
+    </main>
+
+    <!-- ========== Subanalysis ========== -->
+    <main class="view view--sub" id="viewSub" hidden>
+      <div class="stack" style="gap:6px">
+        <h2 class="pa-screen-title">Subanalysis</h2>
+        <p class="pa-body-16" style="margin:0">Subset Selection — Select the Interactions for Analysis</p>
+      </div>
+
+      <div class="picked" id="subPicked"></div>
+
+      <div class="sub__cols">
+        <aside class="rail">
+          <h3 class="pa-rail-title">Display Options</h3>
+
+          <label class="vsw" style="gap:14px">
+            <span class="vsw__label" style="order:-1;min-width:120px;font-size:14px">Show Counts</span>
+            <input type="checkbox" id="showCounts" checked>
+            <span class="vsw__track"><span class="vsw__thumb"></span></span>
+          </label>
+
+          <p class="pa-body-14 rail__note">Choose categories like cohort, discipline, or practice setting from the dropdown menus to filter surveys.</p>
+
+          <button class="pa-btn pa-btn--secondary pa-btn--sm" style="align-self:flex-start"><span>Run Subanalysis Lvl1</span></button>
+
+          <label class="vsw" style="gap:14px">
+            <span class="vsw__label" style="order:-1;min-width:120px;font-size:14px">Matched Data: <span id="matchedLabel">OFF</span></span>
+            <input type="checkbox" id="matchedData">
+            <span class="vsw__track"><span class="vsw__thumb"></span></span>
+          </label>
+
+          <h4 class="pa-band subhead">Submission Dates</h4>
+          <div class="rail__dates">
+            <div class="vf">
+              <input class="vf__input" type="date" value="2026-08-20">
+              <label class="vf__label">Start Date</label>
+            </div>
+            <div class="vf">
+              <input class="vf__input" type="date" value="2026-08-30">
+              <label class="vf__label">End Date</label>
+            </div>
+          </div>
+
+          <div id="filterGroups"></div>
+        </aside>
+
+        <div class="results">
+          <p class="pa-body-14 results__hint">Select key answer options from the survey that relate to your research topic. <span>(Horizontal scrolling: hold [SHIFT] and scroll)</span></p>
+          <button class="pa-btn pa-btn--secondary pa-btn--sm" style="align-self:flex-start"><span>Run Subanalysis Lvl2</span></button>
+          <div class="results__scroll">
+            <div class="results__track" id="resultColumns"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="foot">1997-2026 PRIME Education, LLC</footer>
+    </main>
+
+    <!-- ========== Saved Subanalysis ========== -->
+    <main class="view view--saved" id="viewSaved" hidden>
+      <div class="stack" style="gap:4px">
+        <h2 class="pa-screen-title">Saved Subanalysis</h2>
+        <div class="crumbs" id="crumbs"></div>
+      </div>
+
+      <div class="toolbar">
+        <button class="pa-btn pa-btn--secondary-grey pa-btn--lg" id="btnNewFolder"><i class="mdi mdi-folder-plus-outline" style="font-size:18px"></i><span>New Folder</span></button>
+        <button class="pa-btn pa-btn--secondary-grey pa-btn--lg" id="btnEditFolder"><i class="mdi mdi-folder-edit-outline" style="font-size:18px"></i><span>Edit Folder</span></button>
+        <button class="pa-btn pa-btn--secondary-grey pa-btn--lg" id="btnMoveFolder"><i class="mdi mdi-folder-move-outline" style="font-size:18px"></i><span>Move Folder</span></button>
+        <button class="pa-btn pa-btn--danger-outline pa-btn--lg" id="btnDeleteFolder"><i class="mdi mdi-folder-remove-outline" style="font-size:18px"></i><span>Delete Folder</span></button>
+        <div class="search" style="flex:1;min-width:280px;height:40px">
+          <input placeholder="Search…">
+          <i class="mdi mdi-magnify" style="color:var(--pa-ink-6);font-size:19px"></i>
+        </div>
+      </div>
+
+      <div class="scroller">
+        <div class="ftable">
+          <div class="pa-tablebar" style="padding:2px 0 12px">
+            <span class="rangeLabel"></span>
+            <span style="display:flex;align-items:center;gap:10px">Rows per page: <select><option>20</option><option>50</option><option>100</option></select></span>
+            <div class="pa-pager">
+              <button title="Previous page" disabled><i class="mdi mdi-chevron-left" style="font-size:20px;vertical-align:-4px"></i></button>
+              <button aria-current="page">1</button>
+              <button title="Next page" disabled><i class="mdi mdi-chevron-right" style="font-size:20px;vertical-align:-4px"></i></button>
+            </div>
+          </div>
+
+          <div class="ftable__head">
+            <div class="ftable__row"><div>Name</div><div>Last Modified By</div><div>Date Modified</div><div>Date Created</div><div>Subanalyses</div></div>
+          </div>
+          <div class="ftable__body" id="folderRows"></div>
+
+          <div class="pa-tablebar" style="padding:14px 0 0">
+            <span class="rangeLabel"></span>
+            <span style="display:flex;align-items:center;gap:10px">Rows per page: <select><option>20</option><option>50</option><option>100</option></select></span>
+            <div class="pa-pager">
+              <button title="Previous page" disabled><i class="mdi mdi-chevron-left" style="font-size:20px;vertical-align:-4px"></i></button>
+              <button aria-current="page">1</button>
+              <button title="Next page" disabled><i class="mdi mdi-chevron-right" style="font-size:20px;vertical-align:-4px"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1"></div>
+      <footer class="foot" style="padding-top:0">1997-2026 PRIME Education, LLC</footer>
+    </main>
+  </div>
+</div>
+
+<!-- ===== Sync notice (first entry into Subanalysis) ===== -->
+<div class="scrim" id="syncModal" hidden>
+  <div class="dialog dialog--wide">
+    <div class="dialog__head">
+      <i class="mdi mdi-sync" style="color:var(--pa-primary)"></i>
+      <h3 class="pa-modal-title">Survey records are being synced</h3>
+    </div>
+    <p class="pa-body-14 dialog__body">Some survey submission records for your selected activities are missing in Admin 3. We've already started syncing the missing records in the background — you can continue working while we complete the sync.</p>
+    <div class="dialog__foot">
+      <button class="pa-btn pa-btn--primary pa-btn--lg" id="syncOk"><span>Continue to Subanalysis</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Confirm exit (leaving Subanalysis) ===== -->
+<div class="scrim" id="exitModal" hidden style="z-index:70">
+  <div class="dialog">
+    <div class="dialog__head">
+      <i class="mdi mdi-alert-outline" style="color:var(--pa-warning)"></i>
+      <h3 class="pa-modal-title">Confirm exit</h3>
+    </div>
+    <p class="pa-body-14 dialog__body">Are you sure you want to leave this section? Any unsaved subanalysis will be lost — download any data you need before exiting.</p>
+    <div class="dialog__foot">
+      <button class="pa-btn pa-btn--secondary-grey pa-btn--lg" id="exitLeave"><span>Leave</span></button>
+      <button class="pa-btn pa-btn--primary pa-btn--lg" id="exitStay"><span>Stay</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Create / edit folder ===== -->
+<div class="scrim" id="folderModal" hidden>
+  <div class="dialog">
+    <h3 class="pa-modal-title" style="padding:24px 24px 0" id="folderModalTitle">Create New Folder</h3>
+    <div class="dialog__body--plain">
+      <div class="vf">
+        <input class="vf__input" id="folderName" placeholder="Folder Name">
+        <label class="vf__label">Folder Name</label>
+      </div>
+    </div>
+    <div class="dialog__foot">
+      <button class="pa-btn pa-btn--secondary-grey pa-btn--lg" id="folderCancel"><span>Cancel</span></button>
+      <button class="pa-btn pa-btn--primary pa-btn--lg" id="folderSave"><span>Create Folder</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Data
+   ============================================================ */
+var INTERACTIONS = [
+  ["99LV261", ["Pre Reg"], "Bispecific Antibodies in Action: Applying Evidence Across the DLBCL and FL Care Continuum"],
+  ["24LV261", ["Pre Reg"], "Evidence at Every Step: Applying the Latest CAR T-Cell Data Across the NHL Care Continuum"],
+  ["99VS261", ["Pre Reg"], "Bispecific Antibodies in Action: Applying Evidence Across the DLBCL and FL Care Continuum"],
+  ["24VS261", ["Pre Reg"], "Evidence at Every Step: Applying the Latest CAR T-Cell Data Across the NHL Care Continuum"],
+  ["22WC267", ["Pre Reg"], "Durability That Matters: Sustained Drug Delivery in Retinal Vascular Disease"],
+  ["22WC266", ["Pre Reg"], "Decisions That Matter: Applying Evidence to Intravitreal Therapies for Retinal Vascular Diseases"],
+  ["92LV261", ["Pre Reg"], "Optimizing the ATTR-CM Care Continuum: Earlier Recognition, Evidence-Based Treatment, and Longitudinal Management"],
+  ["23VS261", ["Pre Reg"], "Paving the Way to Functional Cure: Integrating Therapeutic Advances and Latest Guidelines Into Care for People Living With Hepatitis B"],
+  ["92VS261", ["Pre Reg"], "Optimizing the ATTR-CM Care Continuum: Earlier Recognition, Evidence-Based Treatment, and Longitudinal Management"],
+  ["23LV261", ["Pre Reg"], "Paving the Way to Functional Cure: Integrating Therapeutic Advances and Latest Guidelines Into Care for People Living With Hepatitis B"],
+  ["13WC269", ["Pre Reg"], "From Evidence to Action in mNSCLC: Expert Office Hours on Emerging ADC-Based Strategies"],
+  ["10LV256", ["Live Polling", "Pre Reg", "Pre Activity", "Post Activity"], "test rem"],
+  ["22DR2613", ["Baseline Provider"], "Bridging the Care Gap: Regional Audit-Feedback and Action-Planning Session to Optimize PI3K/AKT-Induced Hyperglycemia Management"],
+  ["22WC265", ["Pre Reg"], "Mechanisms That Matter: Understanding Intravitreal Therapies for Retinal Vascular Diseases"],
+  ["54WC265", ["Pre Reg"], "Optimizing Treatment Persistence and Patient Outcomes Through Evidence-Based ADC-Associated Adverse Event Management by APPs on the Frontlines of Care"],
+  ["65DR2615", ["Baseline Provider"], "PROactive IBD Care: Implementing the Treat-to-Target Approach to Optimize Disease Monitoring and Patient Outcomes"],
+  ["69WC261", ["Pre Reg"], "Clinical Crosstalk: Integrating ICIs and Strengthening Collaborative Care in NMSC"],
+  ["45WC261", ["Pre Reg"], "Bridging the Gap to CAR T-Cell Therapy for Relapsed/Refractory Multiple Myeloma: An Expert TheraTalk"],
+  ["13WC268", ["Pre Reg"], "Emerging ADC-Based Strategies in mNSCLC: Interpreting Clinical Evidence and Implications for Practice"],
+  ["22VS261", ["Pre Reg"], "Retinal Reflections: Sustained Delivery in Retinal Vascular Disease—From Evidence to Implementation"]
+];
+
+var DEFAULT_CHOSEN = [
+  { label: "72WC2612 - Triage Thinking and Task Shifting to Scale PrEP With Limited Capacity", surveys: ["Pre Activity", "Post Activity"] },
+  { label: "30WC261 - Advances in Perioperative Pain Management: Integrating Emerging Non-Opioid Therapies Into Multimodal Treatment Pathways", surveys: ["Pre Reg", "Pre Activity", "Post Activity"] }
+];
+
+var GROUPS = [
+  { name: "Cohort", items: [
+    { name: "Not Specified", n: 723, pct: "57.89" },
+    { name: "72WC2612", n: 134, pct: "10.73" },
+    { name: "30WC261", n: 392, pct: "31.39" }
+  ]},
+  { name: "Discipline", items: [
+    { name: "Physician", n: 221, pct: "17.69" },
+    { name: "Nurse", n: 290, pct: "23.22" },
+    { name: "Pharmacist", n: 512, pct: "40.99" },
+    { name: "Nurse Practitioner", n: 91, pct: "7.29" }
+  ]}
+];
+
+var Q1 = "Please rate your confidence in initiating sexual health conversations and conducting a sexual history.";
+var Q2 = "Please rate your level of confidence identifying patients who are good candidates for same-day PrEP initiation.";
+var Q3 = "Which of the following aspects of perioperative acute pain management do you find the most challenging? (Select up to 2)";
+
+var COLUMNS = [
+  { title: "72WC2612 - Pre Activity [204]", blocks: [
+    { q: Q1, total: "100.0 %", rows: [["Very high","12.7%"],["High","12.2%"],["Moderate","49.3%"],["Low","16.1%"],["Very low","9.8%"]] },
+    { q: Q2, total: "100.0 %", rows: [["Very high","9.2%"],["High","17.0%"],["Moderate","39.3%"],["Low","23.8%"],["Very low","10.7%"]] }
+  ]},
+  { title: "72WC2612 - Post Activity [135]", blocks: [
+    { q: Q1, total: "100.0 %", rows: [["Very high","14.8%"],["High","26.7%"],["Moderate","48.1%"],["Low","8.9%"],["Very low","1.5%"]] },
+    { q: Q2, total: "100.0 %", rows: [["Very high","16.3%"],["High","27.4%"],["Moderate","44.4%"],["Low","10.4%"],["Very low","1.5%"]] }
+  ]},
+  { title: "30WC261 - Pre Activity [517]", blocks: [
+    { q: Q3, total: "170.2 % (WTD)", rows: [
+      ["Staying up to date on the latest clinical evidence","40.6%"],
+      ["Developing effective multimodal analgesia plans that reduce opioid use","30.4%"],
+      ["Personalizing plans and managing individual variability in response","26.7%"],
+      ["Balancing pain relief with adverse effects and risks associated with certain treatments","34.2%"],
+      ["Ensuring smooth transitions of care across pre-, intra-, and post-operative settings","18.6%"],
+      ["Aligning pain management plans with patients' goals and expectations","17.6%"],
+      ["Other","2.1%"]
+    ]}
+  ]},
+  { title: "30WC261 - Post Activity [388]", blocks: [
+    { q: Q3, total: "168.4 % (WTD)", rows: [
+      ["Staying up to date on the latest clinical evidence","31.2%"],
+      ["Developing effective multimodal analgesia plans that reduce opioid use","24.7%"],
+      ["Personalizing plans and managing individual variability in response","22.9%"],
+      ["Balancing pain relief with adverse effects and risks associated with certain treatments","29.8%"],
+      ["Ensuring smooth transitions of care across pre-, intra-, and post-operative settings","15.4%"],
+      ["Aligning pain management plans with patients' goals and expectations","14.1%"],
+      ["Other","1.6%"]
+    ]}
+  ]}
+];
+
+var TREE = [
+  { id: "personal", parent: null, type: "folder", name: "Personal", modifiedBy: "", dateModified: "03/11/2025", dateCreated: "03/11/2025" },
+  { id: "shared", parent: null, type: "folder", name: "Shared Folder (Public)", modifiedBy: "", dateModified: "03/11/2025", dateCreated: "03/11/2025" },
+  { id: "p1", parent: "personal", type: "folder", name: "Custom Folder", modifiedBy: "-", dateModified: "08/30/2026", dateCreated: "08/30/2026" },
+  { id: "s1", parent: "shared", type: "analysis", name: "23258 Patient Baseline", modifiedBy: "c.anderson@primeinc.org", dateModified: "03/05/2026", dateCreated: "03/05/2026" },
+  { id: "s2", parent: "shared", type: "analysis", name: "75WC2518 Cohort data", modifiedBy: "d.benjamin@primeinc.org", dateModified: "02/19/2026", dateCreated: "02/19/2026" },
+  { id: "s3", parent: "shared", type: "analysis", name: "CLL BTK", modifiedBy: "d.plachy@primeinc.org", dateModified: "07/17/2025", dateCreated: "07/17/2025" }
+];
+
+/* ============================================================
+   State + helpers
+   ============================================================ */
+var state = {
+  view: "selection",
+  selected: [],
+  showCounts: true,
+  matched: false,
+  tree: TREE.slice(),
+  path: [],
+  selectedNode: null,
+  modalMode: null,
+  syncSeen: false,
+  pendingView: null,
+  seq: 1
+};
+
+var $ = function (id) { return document.getElementById(id); };
+var esc = function (s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+};
+
+/* ============================================================
+   Data Selection
+   ============================================================ */
+function renderInteractions() {
+  $("interactionRows").innerHTML = INTERACTIONS.map(function (row, i) {
+    var code = row[0], surveys = row[1], title = row[2];
+    var tags = surveys.map(function (s) { return '<span class="tag tag--row">' + esc(s) + "</span>"; }).join("");
+    return '<div class="itable__row">' +
+      '<div class="itable__check"><input type="checkbox" data-code="' + esc(code) + '"' + (state.selected.indexOf(code) > -1 ? " checked" : "") + "></div>" +
+      '<div class="itable__code">' + esc(code) + "</div>" +
+      '<div class="itable__surveys">' + tags + "</div>" +
+      '<div class="itable__title">' + esc(title) + "</div>" +
+      "</div>";
+  }).join("");
+}
+
+function chosenItems() {
+  if (!state.selected.length) return DEFAULT_CHOSEN;
+  return state.selected.map(function (code) {
+    var r = INTERACTIONS.filter(function (d) { return d[0] === code; })[0];
+    return { code: code, label: code + " - " + r[2], surveys: r[1] };
+  });
+}
+
+function pickedCard(item, tagClass, removable) {
+  var tags = item.surveys.map(function (s) { return '<span class="tag ' + tagClass + '">' + esc(s) + "</span>"; }).join("");
+  return '<div class="picked__card">' +
+    '<div class="picked__body"><div class="picked__title">' + esc(item.label) + '</div><div class="tagrow">' + tags + "</div></div>" +
+    '<button class="topbar__btn" title="Remove interaction" style="width:28px;height:28px;flex:none"' +
+      (removable && item.code ? ' data-remove="' + esc(item.code) + '"' : "") +
+      '><i class="mdi mdi-close" style="font-size:17px;color:var(--pa-ink-3)"></i></button>' +
+    "</div>";
+}
+
+function renderSelectionSummary() {
+  var n = state.selected.length;
+  var picked = $("selectionPicked");
+  picked.hidden = n === 0;
+  picked.innerHTML = n ? chosenItems().map(function (it) { return pickedCard(it, "tag--outline", true); }).join("") : "";
+  $("selectionLabel").textContent = n ? n + (n === 1 ? " interaction selected" : " interactions selected") : "";
+  $("analyzeBtn").disabled = n === 0;
+}
+
+/* ============================================================
+   Subanalysis
+   ============================================================ */
+function renderSubPicked() {
+  $("subPicked").innerHTML = chosenItems().map(function (it) { return pickedCard(it, "tag--solid", false); }).join("");
+}
+
+function renderFilterGroups() {
+  $("filterGroups").innerHTML = GROUPS.map(function (g) {
+    var rows = g.items.map(function (it) {
+      return '<div class="filter__row">' +
+        '<span class="filter__name"><i class="mdi mdi-plus-box-outline" style="font-size:18px;color:var(--pa-ink-3);flex:none"></i>' + esc(it.name) + "</span>" +
+        '<span class="filter__num">' + it.n + "</span>" +
+        '<span class="filter__num">' + it.pct + "</span>" +
+        '<button class="topbar__btn" title="Remove filter" style="width:26px;height:26px;justify-self:end"><i class="mdi mdi-close-box-outline" style="font-size:17px;color:var(--pa-ink-3)"></i></button>' +
+        "</div>";
+    }).join("");
+    return '<div class="filter">' +
+      '<div class="filter__row filter__row--head">' +
+        '<span class="filter__name"><i class="mdi mdi-content-copy" style="font-size:16px;color:var(--pa-ink-3)"></i>' + esc(g.name) +
+        '<i class="mdi mdi-chevron-up" style="font-size:18px;color:var(--pa-ink-3)"></i></span>' +
+        '<span class="filter__num">#</span><span class="filter__num">%</span><span></span>' +
+      "</div>" + rows + "</div>";
+  }).join("");
+}
+
+function renderColumns() {
+  $("resultColumns").innerHTML = COLUMNS.map(function (col) {
+    var blocks = col.blocks.map(function (b) {
+      var rows = b.rows.map(function (r) {
+        return '<div class="rblock__row"><span>' + esc(r[0]) + "</span><span>" + (state.showCounts ? esc(r[1]) : "—") + "</span></div>";
+      }).join("");
+      return '<div class="rblock">' +
+        '<div class="rblock__q">' + esc(b.q) + "</div>" +
+        '<div class="rblock__total"><span>Response</span><span>' + esc(b.total) + "</span></div>" +
+        rows + "</div>";
+    }).join("");
+    return '<div class="rcol"><div class="rcol__head"><span>' + esc(col.title) + '</span><a href="#">View Raw</a></div>' + blocks + "</div>";
+  }).join("");
+}
+
+/* ============================================================
+   Saved Subanalysis
+   ============================================================ */
+function nodeById(id) {
+  return state.tree.filter(function (n) { return n.id === id; })[0] || null;
+}
+
+function renderSaved() {
+  var parent = state.path.length ? state.path[state.path.length - 1] : null;
+  var list = state.tree.filter(function (n) { return n.parent === parent; });
+
+  $("crumbs").innerHTML = [{ name: "Home", index: 0 }]
+    .concat(state.path.map(function (id, i) {
+      var n = nodeById(id);
+      return { name: n ? n.name : id, index: i + 1 };
+    }))
+    .map(function (c, i, arr) {
+      return '<a href="#" data-crumb="' + c.index + '">' + esc(c.name) + "</a>" + (i < arr.length - 1 ? "<span>&gt;</span>" : "");
+    }).join("");
+
+  $("folderRows").innerHTML = list.map(function (n) {
+    var isFolder = n.type === "folder";
+    var acts = isFolder
+      ? "—"
+      : '<button class="topbar__btn" title="Download" style="width:30px;height:30px"><i class="mdi mdi-download" style="font-size:19px;color:var(--pa-primary)"></i></button>' +
+        '<button class="topbar__btn" title="Open subanalysis" style="width:30px;height:30px"><i class="mdi mdi-open-in-new" style="font-size:19px;color:var(--pa-primary)"></i></button>' +
+        '<button class="topbar__btn" title="Delete subanalysis" style="width:30px;height:30px"><i class="mdi mdi-delete-outline" style="font-size:19px;color:var(--pa-error)"></i></button>';
+    return '<div class="ftable__row" data-node="' + esc(n.id) + '" data-selected="' + (state.selectedNode === n.id) + '">' +
+      '<div class="ftable__name"><i class="mdi ' + (isFolder ? "mdi-folder" : "mdi-chart-box-outline") + '" style="font-size:21px;color:' + (isFolder ? "#F5C24C" : "var(--pa-ink)") + '"></i><span>' + esc(n.name) + "</span></div>" +
+      '<div class="ftable__by">' + esc(n.modifiedBy || "") + "</div>" +
+      '<div class="ftable__date">' + esc(n.dateModified) + "</div>" +
+      '<div class="ftable__date">' + esc(n.dateCreated) + "</div>" +
+      '<div class="ftable__acts">' + acts + "</div>" +
+      "</div>";
+  }).join("") + (list.length ? "" : '<div class="ftable__empty">No data available</div>');
+
+  var label = list.length ? "1-" + list.length + " of " + list.length : "0-0 of 0";
+  Array.prototype.forEach.call(document.querySelectorAll(".rangeLabel"), function (el) { el.textContent = label; });
+
+  var sel = state.selectedNode ? nodeById(state.selectedNode) : null;
+  var folderSelected = !!sel && sel.type === "folder" && state.path.length > 0;
+  $("btnNewFolder").disabled = state.path.length === 0;
+  $("btnEditFolder").disabled = !folderSelected;
+  $("btnMoveFolder").disabled = !folderSelected;
+  $("btnDeleteFolder").disabled = !folderSelected;
+}
+
+/* ============================================================
+   View switching
+   ============================================================ */
+function setView(view) {
+  state.view = view;
+  $("viewSelection").hidden = view !== "selection";
+  $("viewSub").hidden = view !== "sub";
+  $("viewSaved").hidden = view !== "saved";
+  $("subActions").hidden = view !== "sub";
+  Array.prototype.forEach.call(document.querySelectorAll("[data-tab]"), function (btn) {
+    btn.classList.toggle("pa-tabs__btn--active", btn.getAttribute("data-tab") === view);
+  });
+  if (view === "sub" && !state.syncSeen) {
+    state.syncSeen = true;
+    $("syncModal").hidden = false;
+  }
+  window.scrollTo(0, 0);
+}
+
+function requestView(view) {
+  if (state.view === "sub" && view !== "sub") {
+    state.pendingView = view;
+    $("exitModal").hidden = false;
+  } else {
+    setView(view);
+  }
+}
+
+/* ============================================================
+   Events
+   ============================================================ */
+document.addEventListener("click", function (e) {
+  var tab = e.target.closest("[data-tab]");
+  if (tab) { requestView(tab.getAttribute("data-tab")); return; }
+
+  var remove = e.target.closest("[data-remove]");
+  if (remove) {
+    var code = remove.getAttribute("data-remove");
+    state.selected = state.selected.filter(function (c) { return c !== code; });
+    renderInteractions(); renderSelectionSummary(); renderSubPicked();
+    return;
+  }
+
+  var crumb = e.target.closest("[data-crumb]");
+  if (crumb) {
+    e.preventDefault();
+    state.path = state.path.slice(0, parseInt(crumb.getAttribute("data-crumb"), 10));
+    state.selectedNode = null;
+    renderSaved();
+    return;
+  }
+
+  var row = e.target.closest("[data-node]");
+  if (row) {
+    state.selectedNode = row.getAttribute("data-node");
+    renderSaved();
+    return;
+  }
+});
+
+document.addEventListener("dblclick", function (e) {
+  var row = e.target.closest("[data-node]");
+  if (!row) return;
+  var node = nodeById(row.getAttribute("data-node"));
+  if (node && node.type === "folder") {
+    state.path = state.path.concat(node.id);
+    state.selectedNode = null;
+    renderSaved();
+  }
+});
+
+document.addEventListener("change", function (e) {
+  var box = e.target.closest('#interactionRows input[type="checkbox"]');
+  if (box) {
+    var code = box.getAttribute("data-code");
+    if (box.checked) state.selected = state.selected.concat(code);
+    else state.selected = state.selected.filter(function (c) { return c !== code; });
+    renderSelectionSummary(); renderSubPicked();
+  }
+});
+
+$("analyzeBtn").addEventListener("click", function () { setView("sub"); });
+$("syncOk").addEventListener("click", function () { $("syncModal").hidden = true; });
+$("exitStay").addEventListener("click", function () { state.pendingView = null; $("exitModal").hidden = true; });
+$("exitLeave").addEventListener("click", function () {
+  $("exitModal").hidden = true;
+  var next = state.pendingView; state.pendingView = null;
+  if (next) setView(next);
+});
+
+$("showCounts").addEventListener("change", function (e) { state.showCounts = e.target.checked; renderColumns(); });
+$("matchedData").addEventListener("change", function (e) {
+  state.matched = e.target.checked;
+  $("matchedLabel").textContent = state.matched ? "ON" : "OFF";
+});
+
+function openFolderModal(mode) {
+  state.modalMode = mode;
+  var sel = state.selectedNode ? nodeById(state.selectedNode) : null;
+  $("folderModalTitle").textContent = mode === "edit" ? "Edit Folder" : "Create New Folder";
+  $("folderSave").firstChild.textContent = mode === "edit" ? "Save Folder" : "Create Folder";
+  $("folderName").value = mode === "edit" && sel ? sel.name : "";
+  $("folderModal").hidden = false;
+  $("folderName").focus();
+}
+
+$("btnNewFolder").addEventListener("click", function () { openFolderModal("new"); });
+$("btnEditFolder").addEventListener("click", function () { openFolderModal("edit"); });
+$("folderCancel").addEventListener("click", function () { $("folderModal").hidden = true; });
+$("folderSave").addEventListener("click", function () {
+  var name = $("folderName").value.trim() || "Untitled Folder";
+  if (state.modalMode === "edit" && state.selectedNode) {
+    var node = nodeById(state.selectedNode);
+    if (node) { node.name = name; node.dateModified = "08/30/2026"; }
+  } else {
+    state.tree.push({
+      id: "f" + state.seq++, parent: state.path.length ? state.path[state.path.length - 1] : null,
+      type: "folder", name: name, modifiedBy: "-", dateModified: "08/30/2026", dateCreated: "08/30/2026"
+    });
+  }
+  $("folderModal").hidden = true;
+  renderSaved();
+});
+$("btnDeleteFolder").addEventListener("click", function () {
+  var id = state.selectedNode;
+  state.tree = state.tree.filter(function (n) { return n.id !== id && n.parent !== id; });
+  state.selectedNode = null;
+  renderSaved();
+});
+
+/* ---------- boot ---------- */
+renderInteractions();
+renderSelectionSummary();
+renderSubPicked();
+renderFilterGroups();
+renderColumns();
+renderSaved();
+setView("selection");
+</script>
+</body>
+</html>
